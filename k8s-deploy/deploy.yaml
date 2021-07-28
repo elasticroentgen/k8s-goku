@@ -27,8 +27,8 @@ spec:
         - name: k8s-goku
           image: markuskeil/k8s-goku:latest
           env:
-            - name: REDIS_HOST
-              value: k8s-foku-redis
+            - name: REDISHOST
+              value: k8s-goku-redis
           resources:
             limits:
               memory: "128Mi"
