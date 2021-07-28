@@ -1,0 +1,71 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-goku
+spec:
+  selector:
+    app: k8s-goku
+  ports:
+    - port: 8000
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-goku
+spec:
+  selector:
+    matchLabels:
+      app: k8s-goku
+  template:
+    metadata:
+      labels:
+        app: k8s-goku
+    spec:
+      containers:
+        - name: k8s-goku
+          image: markuskeil/k8s-goku:latest
+          env:
+            - name: REDIS_HOST
+              value: k8s-foku-redis
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-goku-redis
+spec:
+  selector:
+    app: k8s-goku-redis
+  ports:
+    - port: 6379
+      targetPort: 6379
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-goku-redis
+spec:
+  selector:
+    matchLabels:
+      app: k8s-goku-redis
+  template:
+    metadata:
+      labels:
+        app: k8s-goku-redis
+    spec:
+      containers:
+        - name: k8s-goku-redis
+          image: redis
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 6379
