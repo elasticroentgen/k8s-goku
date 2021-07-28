@@ -42,6 +42,12 @@ app.use((req,res,next) => {
     res.end();
 });
 
+log("K8s Goku starting.");
+
 app.listen(port, () => {
-    log(`HTTP Ingest listening on ${port}...`);
+    log(`\tListening on ${port}...`);
 });
+
+process.on('SIGTERM', function () {
+    log("Exiting....")
+ });
