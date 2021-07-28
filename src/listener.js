@@ -2,13 +2,17 @@ const redis = require('redis');
 const express = require('express');
 const app = express();
 
+const redisHost = process.env.REDISHOST || "localhost"
+const port = process.env.PORT || "8000";
+
 // create redis client
 const redisClient = redis.createClient({
-    host: '172.16.10.194',
+    host: redisHost,
 });
 
 function log(msg) {
-    console.log(Date.now() + " | " + msg);
+    const today = new Date(Date.now());
+    console.log(today.toISOString() + " | " + msg);
 }
 
 redisClient.on('error', err => {
@@ -38,6 +42,6 @@ app.use((req,res,next) => {
     res.end();
 });
 
-app.listen('8000', () => {
-    log("HTTP Ingest listening on 8000...");
+app.listen(port, () => {
+    log(`HTTP Ingest listening on ${port}...`);
 });

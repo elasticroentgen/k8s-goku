@@ -3,7 +3,8 @@ const axios = require('axios');
 const fs = require('fs');
 
 function log(msg) {
-    console.log(Date.now() + " | " + msg);
+    const today = new Date(Date.now());
+    console.log(today.toISOString() + " | " + msg);
 }
 
 const save = (reqInfo, reqId, durationMs, response) => {
